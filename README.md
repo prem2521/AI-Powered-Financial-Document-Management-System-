@@ -1,24 +1,43 @@
-# AI-Powered-Financial-Document-Management-System-
-🔹 Short Description (Best for repo header)
+# Financial Document Management System
 
-A production-ready Financial Document Management System built with FastAPI, featuring JWT authentication, role-based access, and AI-powered semantic search using RAG and vector embeddings.
+A production-ready FastAPI-based system with semantic search using AI/ML.
+It allows organizations to upload, manage, analyze, and retrieve financial documents such as invoices, reports, and contracts.
 
-🔹 Medium Description (Recommended)
+## Tech Stack
+- **Backend:** FastAPI (Python)
+- **Database:** PostgreSQL (with SQLite fallback for local dev) via SQLAlchemy/Alembic
+- **Vector DB:** ChromaDB
+- **Authentication:** JWT-based
+- **AI/ML:** LangChain, HuggingFace embeddings (`all-MiniLM-L6-v2`), Cross-Encoder Reranking (`ms-marco-MiniLM-L-6-v2`)
+- **File Storage:** Local Directory
 
-A scalable Financial Document Management System built using FastAPI that enables secure document handling with JWT-based authentication and role-based access control (RBAC).
+## Features
+- **User Authentication & Authorization:** JWT and RBAC (Admin, Financial Analyst, Auditor, Client)
+- **Document Management:** Upload, Retrieve, Search by metadata, Delete
+- **RAG & Semantic Search:** Document chunking, vector embeddings, and highly accurate top-k semantic search using Cross-Encoder reranking.
 
-It integrates AI/ML-powered semantic search (RAG) using embeddings and reranking, allowing users to efficiently retrieve financial documents like invoices, reports, and contracts with high accuracy.
+## Running the Application Locally (Without Docker)
+1. Setup Python environment and install requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Run database migrations (defaults to local SQLite `sql_app.db`):
+   ```bash
+   alembic upgrade head
+   ```
+3. Start the FastAPI server:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
 
-🔹 Detailed Description (Best for GitHub About section)
+## Running with Docker Compose
+1. Ensure Docker is installed.
+2. Run:
+   ```bash
+   docker-compose up --build
+   ```
+3. The API will be available at `http://localhost:8000`. Swagger docs at `http://localhost:8000/docs`.
 
-This project is a production-ready Financial Document Management System designed to help organizations securely upload, manage, and retrieve financial documents.
-
-It leverages FastAPI for backend development, PostgreSQL/SQLite for database management, and ChromaDB for vector storage. The system incorporates AI-powered semantic search using Retrieval-Augmented Generation (RAG), enabling intelligent document discovery through embeddings and cross-encoder reranking.
-
-Key capabilities include:
-
-Secure JWT authentication
-Role-Based Access Control (RBAC) (Admin, Analyst, Auditor, Client)
-Efficient document upload, storage, and retrieval
-Advanced semantic search with AI/ML models
-Docker support for easy deployment
+## API Documentation
+The API docs are automatically generated via FastAPI and can be found at `/docs` (Swagger UI).
+A Postman collection is also provided: `postman_collection.json`.

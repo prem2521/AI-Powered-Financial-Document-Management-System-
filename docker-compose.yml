@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-fin_docs}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-fin_docs}
+      - CHROMA_DB_DIR=/app/chroma_db
+      - SECRET_KEY=test-secret-key
+    volumes:
+      - .:/app
+      - chroma_data:/app/chroma_db
+      - uploaded_docs:/app/uploaded_documents
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  chroma_data:
+  uploaded_docs:
